@@ -1,3 +1,4 @@
+// Imports
 const express = require('express');
 const mongoose = require('mongoose'); 
 const authRouter = require('./routes/authRouter');
@@ -5,7 +6,7 @@ const authRouter = require('./routes/authRouter');
 // Init
 const PORT = 3000;
 const app = express();
-const dbUrl = "";
+const dbUrl = "mongodb+srv://RedHotChef:redhot123Chef@cluster0.azomhpl.mongodb.net/?retryWrites=true&w=majority";
 
 // Connections
 app.listen(PORT, "0.0.0.0", () => {
@@ -18,10 +19,11 @@ mongoose.connect(dbUrl).then(() => {
     console.log(e);
 });
 
-// Middleware
+// Middlewares
+app.use(express.json());
 app.use(authRouter);
 
-// GET response
+// GET request
 app.get('/', (req, res) => {
     res.json({ 'msg' : 'Hello World!' });
 });
