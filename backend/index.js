@@ -14,13 +14,14 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
 mongoose.connect(dbUrl).then(() => {
-    console.log("Connection Successful");
+    console.log("Database Connection Successful");
 }).catch((e) => {
     console.log(e);
 });
 
 // Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(authRouter);
 
 // GET request
