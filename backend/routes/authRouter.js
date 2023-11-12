@@ -15,6 +15,7 @@ authRouter.post("/api/user/signup", async (req, res) => {
     if (existName || existMail)
       return res.status(400).json({ msg: "User already exists" });
 
+    // encrypting password with a hashed value
     const hashedPassword = await bcrypt.hash(password, 10);
 
     let user = new User({
@@ -45,6 +46,7 @@ authRouter.post("/api/user/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
+    // creating a auth token key for the user
     const token = jwt.sign({ id: user._id }, "secretKey");
     res.json({ token, ...user._doc });
 
