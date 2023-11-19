@@ -1,14 +1,62 @@
 import { React, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable } from 'react-native';
+import { View, Text, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import authService from '../services/authService';
 
 const signup = () => {
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const signupPressed = async () => {
+    setLoading(true);
+  
+    // FormData validations
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(username === '' || email === '' || password === '') {
+      Alert.alert("Error", "Please fill in all the fields!");
+      setLoading(false);
+      return;
+    }
+    else if(username.length < 3) {
+      Alert.alert("Error", "Username must be at least 3 characters!");
+      setLoading(false);
+      return;
+    }
+    else if(password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters!");
+      setLoading(false);
+      return;
+    }
+    else if(!regex.test(email)) {
+      Alert.alert("Error", "Email Invalid!");
+      setLoading(false);
+      return;
+    }
+
+    // Signup api response
+    try {
+      let res = await authService.signup(username, email, password);
+  
+      if (res.status >= 200 && res.status < 300) {
+        Alert.alert("Success", "User successfully signed up!");
+      } else {
+        Alert.alert("Error", "User already exists!");
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Something went wrong!");
+    }
+  
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setLoading(false);
+  }
 
   return (
     <SafeAreaView className = "flex-1 bg-red-100 items-center" >
@@ -28,6 +76,7 @@ const signup = () => {
             <AntDesign name = "user" size = {24} color = "black" />
             <TextInput
             className = "ml-3 h-12 text-lg border-black"
+            value={username}
             placeholder='Username'
             onChangeText={text => setUsername(text)}
             ></ TextInput>
@@ -37,8 +86,9 @@ const signup = () => {
             <AntDesign name = "mail" size = {24} color = "black" />
             <TextInput
             className = "ml-3 h-12 text-lg border-black"
+            value={email}
             placeholder='Email'
-            onChangeText={text => setEmail(text)}
+            onChangeText = {text => setEmail(text)}
             ></ TextInput>
           </View>
           {/* Password */}
@@ -47,18 +97,25 @@ const signup = () => {
             <TextInput
             className = "ml-3 h-12 text-lg border-black"
             placeholder='Password'
-            secureTextEntry = {true}
-            onChangeText={text => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+            onChangeText = {text => setPassword(text)}
             ></ TextInput>
           </View>
           {/* Button */}
-          <Pressable className = "flex-col items-center justify-center mt-12 h-12 bg-red-500 rounded-2xl" >
-            <Text className = "text-white text-lg font-bold" >Sign Up</Text>
+          <Pressable
+          className = "flex-col items-center justify-center mt-12 h-12 rounded-2xl"
+          style = {{backgroundColor: loading ? "#FEE2E2" : "#EF4444"}}
+          onPress={signupPressed}
+          disabled={loading}
+          >
+            <Text className = "text-red text-lg font-bold" style={{color: loading ? "#FEE2E2" : "#FEF2F2"}} >Sign Up</Text>
           </Pressable>
-          <Pressable className = "flex-row items-center justify-center mt-4" onPress={() => router.replace("/screens/login")} >
+          <Pressable className = "flex-row items-center justify-center my-4" onPress={() => router.replace("/screens/login")} >
             <Text className = "text-gray-700 font-bold mr-0.5" >Already have an account?</Text>
             <Text className = "text-red-500 font-bold ml-0.5" >Login</Text>
           </Pressable>
+          <ActivityIndicator size="large" animating = {loading} color = "#EF4444" />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
