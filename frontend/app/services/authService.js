@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const apiUrl = 'http://192.168.0.101:3000/api/user';
 
 const authService = {
@@ -37,6 +38,10 @@ const authService = {
           return status < 500;
         }
       });
+
+      if(response.status < 300)
+        await AsyncStorage.setItem('authtoken', response.data.token);
+
       return response;
 
     } catch (err) {
