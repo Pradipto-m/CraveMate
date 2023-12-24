@@ -1,19 +1,19 @@
 // Imports
 const express = require('express');
-const mongoose = require('mongoose'); 
+const mongoose = require('mongoose');
 const authRouter = require('./routes/authRouter');
+const dburl = require('./.env');
 
 // Init
 const PORT = 3000;
 const app = express();
-const dbUrl = "mongodb+srv://RedHotChef:redhot123Chef@cluster0.azomhpl.mongodb.net/?retryWrites=true&w=majority";
 
 // Connections
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-mongoose.connect(dbUrl).then(() => {
+mongoose.connect(dburl).then(() => {
     console.log("Database Connection Successful");
 }).catch((e) => {
     console.log(e);
