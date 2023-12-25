@@ -24,13 +24,13 @@ const signupUser =  async (req, res) => {
     user = await user
       .save()
       .then(() => {
-        res.status(201).json({ ...user._doc, msg: "User created successfully" });
+        return res.status(201).json({ ...user._doc, msg: "User created successfully" });
       })
       .catch((e) => {
-        res.status(500).json({ err: e.message });
+        return res.status(500).json({ err: e.message });
       });
   } catch (e) {
-    res.status(500).json({ err: e.message });
+    return res.status(500).json({ err: e.message });
   }
 };
 
@@ -45,12 +45,22 @@ const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-    // creating a auth token key for the user
-    const token = jwt.sign({ id: user._id }, "secretKey");
-    res.status(200).json({ token, ...user._doc });
+    // creating a auth token for the user
+    const token = jwt.sign({ id: user._id }, "authKey");
+    return res.status(200).json({ token, ...user._doc });
   } catch (e) {
-    res.status(500).json({ err: e.message });
+    return res.status(500).json({ err: e.message });
   }
 };
 
-module.exports = { signupUser, loginUser };
+// Get user data API
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    return res.json(user);
+  } catch (e) {
+    return res.status(500).json({ err: e.message });
+  }
+};
+
+module.exports = { signupUser, loginUser, getUser };

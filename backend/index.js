@@ -22,9 +22,11 @@ mongoose.connect(dburl).then(() => {
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
 app.use(authRouter);
 
 // GET request
 app.get('/', (req, res) => {
-    res.json({ 'msg' : 'Hello World!' });
+    res.json({ msg : 'Hello World!' });
 });

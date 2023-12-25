@@ -1,11 +1,13 @@
 const express = require("express");
-const loginUser = require("../controllers/authController");
-const signupUser = require("../controllers/authController");
+const { signupUser, loginUser, getUser } = require("../controllers/authController");
+const auth = require("../middleware/auth");
 
 const authRouter = express.Router();
 
-authRouter.post('/api/user/signup', (req, res) => signupUser);
+authRouter.post('/api/user/signup', signupUser);
 
-authRouter.post("/api/user/login", (req, res) => loginUser);
+authRouter.post("/api/user/login", loginUser);
+
+authRouter.get("/api/user/auth", auth, getUser);
 
 module.exports = authRouter;
