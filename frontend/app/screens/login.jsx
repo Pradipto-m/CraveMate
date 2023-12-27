@@ -38,6 +38,7 @@ const login = () => {
 
       if (res.status >= 200 && res.status < 300) {
         Alert.alert("Success", "User logged in successfully!");
+        router.replace("/screens/home");
       } else {
         Alert.alert("Error", "User doesn't exist!");
       }
@@ -49,8 +50,6 @@ const login = () => {
     setEmail('');
     setPassword('');
     setLoading(false);
-
-    router.replace("/screens/home");
   }
 
   return (

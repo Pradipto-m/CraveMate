@@ -1,6 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const apiUrl = 'http://192.168.0.101:3000/api/user';
+import localhost from '../../util';
+
+const apiUrl = `http://${localhost}:3000/api/user`;
 
 const authService = {
   // Signup api call
@@ -39,7 +41,7 @@ const authService = {
         }
       });
 
-      if(response.status < 300)
+      if(response.status >= 200 && response.status < 300)
         await AsyncStorage.setItem('authtoken', response.data.token);
 
       return response;
@@ -48,7 +50,23 @@ const authService = {
       console.log(err);
       throw err;
     }
+  },
+
+  fetchUser : async () => {
+    try {
+      const token = await AsyncStorage.getItem('authtoken');
+      let response = await axios.get(`${apiUrl}/auth`, {
+        headers: {
+          'Bearer': token
+        }
+      });
+      return response;
+
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
-}
+};
 
 export default authService;

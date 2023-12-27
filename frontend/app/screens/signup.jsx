@@ -41,22 +41,31 @@ const signup = () => {
     // Signup api response
     try {
       let res = await authService.signup(username, email, password);
-  
       if (res.status >= 200 && res.status < 300) {
+        // Signing up user is successful
         Alert.alert("Success", "User successfully signed up!");
+        // Logging user in automatically for auth token
+        authService.login(email, password).then((res) => {
+          if (res.status >= 200 && res.status < 300) {
+            // User is successfully authenticated
+            router.replace("/screens/home");
+          } else {
+            Alert.alert("Error", "Something went wrong! Please sign in.");
+          }
+        }).catch((err) => {
+          console.error(err);
+        });
       } else {
         Alert.alert("Error", "User already exists!");
       }
     } catch (err) {
       console.error(err);
-      Alert.alert("Error", "Something went wrong!");
     }
   
     setUsername('');
     setEmail('');
     setPassword('');
     setLoading(false);
-    router.replace("/screens/home");
   }
 
   return (
