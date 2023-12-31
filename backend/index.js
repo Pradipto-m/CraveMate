@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/authRouter');
+const productRouter = require('./routes/productRouter');
 const dburl = require('./.env');
 
 // Init
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use(authRouter);
+app.use(productRouter);
 
 // GET request
 app.get('/', (req, res) => {

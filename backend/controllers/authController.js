@@ -24,13 +24,13 @@ const signupUser =  async (req, res) => {
     user = await user
       .save()
       .then(() => {
-        return res.status(201).json({ ...user._doc, msg: "User created successfully" });
+        res.status(201).json({ ...user._doc, msg: "User created successfully" });
       })
       .catch((e) => {
-        return res.status(500).json({ err: e.message });
+        res.status(500).json({ err: e.message });
       });
   } catch (e) {
-    return res.status(500).json({ err: e.message });
+    res.status(500).json({ err: e.message });
   }
 };
 
@@ -47,9 +47,9 @@ const loginUser = async (req, res) => {
 
     // creating a auth token for the user
     const token = jwt.sign({ id: user._id }, "authKey");
-    return res.status(200).json({ token, ...user._doc });
+    res.status(200).json({ token, ...user._doc });
   } catch (e) {
-    return res.status(500).json({ err: e.message });
+    res.status(500).json({ err: e.message });
   }
 };
 
@@ -57,9 +57,9 @@ const loginUser = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user);
-    return res.json(user);
+    res.json(user);
   } catch (e) {
-    return res.status(500).json({ err: e.message });
+    res.status(500).json({ err: e.message });
   }
 };
 
