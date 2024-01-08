@@ -40,4 +40,4 @@ const splash = () => {
   )
 }
 
-export default splash
+export default splash;
