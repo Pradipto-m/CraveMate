@@ -43,13 +43,12 @@ const SignupScreen = ({navigation}: any) => {
     try {
       let response = await authService.signup(username, email, password);
       if (response.status >= 200 && response.status < 300) {
-        // Signing up user is successful
-        Alert.alert('Success', 'User successfully signed up!');
-        // Logging user in automatically for auth token
+        // User signup is successful
+        // Logging user in for auth token
         authService.login(email, password).then((res) => {
           if (res.status >= 200 && res.status < 300) {
             // User is successfully authenticated
-            navigation.replace('Tabs');
+            navigation.replace('Splash');
           } else {
             Alert.alert('Error', 'Something went wrong! Please sign in.');
           }

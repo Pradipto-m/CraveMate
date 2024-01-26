@@ -56,9 +56,12 @@ const authService = {
   fetchUser : async () => {
     try {
       const token = await AsyncStorage.getItem('authtoken');
+      if (!token) {
+        throw new Error('No auth token found');
+      }
       let response = await axios.get(`${apiUrl}/auth`, {
         headers: {
-          'Bearer': token,
+          'Authorization': `Bearer ${token}`,
         },
       });
       return response;

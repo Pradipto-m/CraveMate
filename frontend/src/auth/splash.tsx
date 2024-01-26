@@ -1,37 +1,27 @@
 import {View, Text, Image, ActivityIndicator, Alert, useColorScheme} from 'react-native';
 import React, { useEffect } from 'react';
+import { useSetAtom } from 'jotai';
 import {color} from '../themes';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import authService from '../services/authService';
+import { fetchUser } from '../contexts/userStore';
 
 const SplashOnboard = ({navigation}: any) => {
-  const Dark = useColorScheme() === 'dark';
   const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
+  const Dark = useColorScheme() === 'dark';
+  const fetchUserAtom = useSetAtom(fetchUser);
 
   useEffect(() => {
-    delay(2000).then(() => {
-      AsyncStorage.getItem('authtoken').then(value => {
-        if (value !== null) {
-          // User is already signed in...Fetching data
-          authService.fetchUser().then(res => {
-            if (res.status >= 200 && res.status < 300) {
-              navigation.replace('Tabs');
-            } else {
-              // User authorisation failed
-              navigation.replace('Login');
-              Alert.alert('Error', 'Something went wrong! Please sign in again.');
-            }
-          }).catch(err => {
-            navigation.replace('Login');
-            Alert.alert('Error', `${err.message}! Please sign in again.`);
-          });
-        } else {
-          navigation.replace('Login');
-        }
-      });
-    }).catch(err => {
-      console.error(err);
-    });
+    const fetchUserData = async () => {
+      try {
+        await fetchUserAtom();
+        navigation.replace('Tabs');
+        Alert.alert('Success', 'User Authorisation Successful!');
+      } catch (err) {
+        console.error(err);
+        Alert.alert('Error', 'Authorisation error!\nPlease sign in again.');
+        navigation.replace('Login');
+      }
+    };
+    delay(1500).then(fetchUserData);
   });
 
   return (

@@ -37,8 +37,7 @@ const LoginScreen = ({navigation}: any) => {
     try {
       let res = await authService.login(email, password);
       if (res.status >= 200 && res.status < 300) {
-        Alert.alert('Success', 'User logged in successfully!');
-        navigation.replace('Tabs');
+        navigation.replace('Splash');
       } else {
         Alert.alert('Error', 'User doesn\'t exist!');
       }

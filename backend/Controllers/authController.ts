@@ -8,9 +8,11 @@ const signupUser = async (req: Request, res: Response) => {
   try {
     const {username, email, password} = req.body;
     
-    const check = await User.findOne({username}) || User.findOne({email});
-    if (check) {
-      return res.status(400).json({status: 'fail', msg: 'User already exists'});
+    const checkName = await User.findOne({username});
+    const checkMail = await User.findOne({email});
+    const checkPass = password.length < 6;
+    if (checkName || checkMail || checkPass) {
+      return res.status(400).json({status: 'fail', msg: 'User registration failed!'});
     }
     
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -20,17 +22,16 @@ const signupUser = async (req: Request, res: Response) => {
       password: hashedPassword
     });
 
-    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET!);
     // const verification = crypto.randomBytes(32).toString('hex');
 
     await user.save().then(() => {
-      res.status(201).json({status: 'success', token, user});
+      res.status(201).json({user});
     }).catch((err) => {
       res.status(500).json({status: 'error', error: err});
     });
 
   } catch (err) {
-    res.status(500).json({status: 'fail', error: err});
+    res.status(500).json({status: 'error', error: err});
   }
 };
 
@@ -49,7 +50,7 @@ const loginUser = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign({id: user._id}, process.env.JWT_SECRET!);
-    res.status(200).json({status: 'success', token, user});
+    res.status(200).json({status: 'success', token});
 
   } catch (err) {
     res.status(500).json({status: 'error', error: err});
@@ -59,9 +60,12 @@ const loginUser = async (req: Request, res: Response) => {
 const getUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.body.userid);
-    res.json(user);
-  } catch (e) {
-    res.status(500).json({ err: e });
+    if (!user) {
+      return res.status(400).json({status: 'fail', msg: 'Authorisation Denied!'});
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };
 

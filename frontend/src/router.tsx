@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashOnboard from './auth/splash';
@@ -6,9 +5,16 @@ import LoginScreen from './auth/login';
 import SignupScreen from './auth/signup';
 import TabRoutes from './bottomTabs';
 
+export type RootStackParamList = {
+  Splash: undefined;
+  Login: undefined;
+  Signup: undefined;
+  Tabs: undefined;
+};
+
 const Router = () => {
 
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <Stack.Navigator

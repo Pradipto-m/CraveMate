@@ -13,8 +13,8 @@ const HomePage = () => {
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight}}>
       {/* Header */}
-      <View className = "justify-center h-16" >
-        <Text className = "p-3 text-xl font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}} >Welcome to CraveMate, Foodie!</Text>
+      <View className = "justify-center items-start mx-3 h-[69px]" >
+        <Text style={{color: Dark ? color.contrastLight : color.primaryDark, fontSize: 25, fontWeight: 'bold'}} >Welcome to CraveMate, Foodie!</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
