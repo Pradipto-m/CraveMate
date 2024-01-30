@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const Orders = () => {
+const OrdersSection = () => {
   return (
     <View>
       <Text>Orders</Text>
@@ -9,4 +9,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default OrdersSection;

@@ -1,22 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, SafeAreaView, ScrollView, TextInput, Pressable, useColorScheme } from 'react-native';
+import { View, Text, Image, SafeAreaView, ScrollView, TextInput, Pressable, useColorScheme, FlatList, TouchableOpacity } from 'react-native';
 import { useAtom, useSetAtom } from 'jotai';
 import { color } from '../themes';
 import Feather from 'react-native-vector-icons/Feather';
 import { productAtom, fetchProducts, fetchByCategory, fetchBySearch } from '../contexts/productStore';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
-const MenuCard = () => {
+const EmptyList = () => (
+  <View className="items-center">
+    <Image source={require('../../assets/empty.png')}/>
+    <Text className="font-medium">Nothing Found</Text>
+  </View>
+);
+
+const MenuScreen = ({navigation}: any) => {
 
   const Dark = useColorScheme() === 'dark';
+  const category = ['All', 'Spicy', 'Chinese', 'Italian', 'Continental', 'Desserts'];
 
+  const [refresh, setRefresh] = useState(false);
   const [products] = useAtom(productAtom);
   const fetchAll = useSetAtom(fetchProducts);
   const fetchCategory = useSetAtom(fetchByCategory);
   const fetchSearched = useSetAtom(fetchBySearch);
   const [name, setName] = useState('');
-
-  const category = ['All', 'Spicy', 'Chinese', 'Italian', 'Continental', 'Desserts'];
 
   useEffect(() => {
     fetchAll();
@@ -33,14 +41,14 @@ const MenuCard = () => {
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight, minHeight: '100%'}}>
       {/* SearchBar */}
-      <View className = "flex-row mx-5 my-2 rounded-3xl" style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}} >
+      <View className = "flex-row mx-5 mt-4 rounded-3xl" style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}} >
         <TextInput
-          className = "flex-1 mx-4 h-12 text-lg"
+          className = "flex-1 mx-4 text-lg"
           placeholder = "Search your favourite food"
           onChangeText={(text) => setName(text)}
         />
         <Pressable
-          className = "items-center justify-center rounded-3xl w-14 h-12"
+          className = "items-center justify-center rounded-3xl w-[62px] h-[52px]"
           style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}}
           onPress = {searchPressed}
         >
@@ -62,35 +70,45 @@ const MenuCard = () => {
           ))}
         </View>
       </ScrollView>
-      {/* Scrollable Menu Items */}
-      <ScrollView>
-        {products.map((item, index) => (
-        <View key={index} className = "items-center my-3" >
-          <View
-            key={index}
-            className = "flex-row items-center rounded-3xl h-36 w-[90%]"
-            style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}}
-          >
-            <Image source={{uri : item.img}} className="w-[45%] h-36 rounded-3xl" style={{resizeMode:'cover'}} />
-            <View className = "flex-col ml-4" >
-              <Text className = "text-lg font-bold text-red-500" >{item.name}</Text>
-              <Text className = "text-base font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}} >by {item.restaurant}</Text>
-              <View className="flex-row gap-5 mt-2">
-                <View className="px-2 h-8 rounded-lg" style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}} >
-                  <Text className = "text-lg font-bold text-rose-50" >₹{item.price}</Text>
-                </View>
-                <View className="pr-2 h-8 rounded-lg" style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}} >
-                  <Text className = "text-lg font-bold text-rose-50" >👌{item.rating}</Text>
+      {/* scrollable menu items */}
+      <FlatList
+        className="mb-36"
+        refreshing={refresh}
+        onRefresh={() => {
+          setRefresh(true); categoryPressed('all'); setRefresh(false);
+        }}
+        data={products}
+        keyExtractor={(item) => item._id}
+        renderItem={({item}) => (
+          <Animated.View className="items-center" entering={FadeInDown.duration(600)}>
+            <TouchableOpacity
+              className = "flex-row items-center rounded-3xl h-36 w-[90%] mt-5"
+              style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}}
+              key={item._id}
+              onPress={() => {
+                navigation.navigate('Menucard', item._id);
+              }}
+            >
+              <Image source={{uri : item.img}} className="w-[45%] h-36 rounded-3xl" style={{resizeMode:'cover'}} />
+              <View className = "flex-col ml-4" >
+                <Text className = "text-lg font-bold text-red-500" >{item.name}</Text>
+                <Text className = "text-base font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}} >by {item.restaurant}</Text>
+                <View className="flex-row gap-5 mt-2">
+                  <View className="px-2 h-8 rounded-lg" style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}} >
+                    <Text className = "text-lg font-bold text-rose-50" >₹{item.price}</Text>
+                  </View>
+                  <View className="pr-2 h-8 rounded-lg" style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}} >
+                    <Text className = "text-lg font-bold text-rose-50" >👌{item.rating}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </View>
-        </View>
-        ))}
-        <View className="h-36" />
-      </ScrollView>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+        ListEmptyComponent={EmptyList}
+      />
     </SafeAreaView>
   );
 };
 
-export default MenuCard;
+export default MenuScreen;

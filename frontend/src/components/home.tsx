@@ -4,6 +4,7 @@ import { View, Text, Image, SafeAreaView, ScrollView, Dimensions, useColorScheme
 import Carousel from 'react-native-reanimated-carousel';
 import { color } from '../themes';
 import { banner, trending, popular } from '../utils';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const HomePage = () => {
 
@@ -19,26 +20,28 @@ const HomePage = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Banner Carousel */}
-        <Carousel
-          loop={true}
-          width={width}
-          height={width / 1.8}
-          autoPlay={true}
-          autoPlayInterval={3000}
-          scrollAnimationDuration={500}
-          data={banner}
-          renderItem={({index}) => (
-            <View className="justify-center items-center m-3" >
-              <Image source={{uri: banner[index]}} className="w-full h-full rounded-2xl" />
-            </View>
-          )}
-        />
+        <Animated.View entering={FadeInDown.duration(750)}>
+          <Carousel
+            loop={true}
+            width={width}
+            height={width / 1.8}
+            autoPlay={true}
+            autoPlayInterval={3000}
+            scrollAnimationDuration={500}
+            data={banner}
+            renderItem={({index}) => (
+              <View className="justify-center items-center m-3" >
+                <Image source={{uri: banner[index]}} className="w-full h-full rounded-2xl" />
+              </View>
+            )}
+          />
+        </Animated.View>
 
         {/* Trending Deals */}
         <View className="flex m-3">
           <Text className="font-bold text-base" style={{color: Dark ? color.contrastLight : color.primaryDark}} >Trending Offers</Text>
         </View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+        <Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} entering={FadeInDown.duration(750)} >
           <View className = "flex-row justify-center items-center" >
             {trending.map((item, index) => (
               <View key={index} className = "flex-col justify-center items-center m-3 p-2 bg-red-500 rounded-xl w-32 h-44" >
@@ -47,9 +50,9 @@ const HomePage = () => {
               </View>
             ))}
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
 
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+        <Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} entering={FadeInDown.duration(750)} >
           <View className = "flex-row justify-center items-center" >
             {popular.map((item, index) => (
               <View key={index} className = "flex-col justify-center items-center m-3 bg-red-500 rounded-2xl h-44" style={{width : width * 0.68}} >
@@ -58,7 +61,7 @@ const HomePage = () => {
               </View>
             ))}
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
 
         {/* Popular Offers */}
         <View className="flex-row flex-wrap justify-center items-center mt-4">
@@ -81,7 +84,7 @@ const HomePage = () => {
           </View>
         </View>
 
-        <View className="flex h-14" />
+        <View className="flex h-16" />
       </ScrollView>
     </SafeAreaView>
   );

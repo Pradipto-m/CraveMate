@@ -1,71 +1,81 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable, ActivityIndicator, Alert, useColorScheme } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { color } from '../themes';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import authService from '../services/authService';
 
+const Button = Animated.createAnimatedComponent(Pressable);
+
 const SignupScreen = ({navigation}: any) => {
 
   const Dark = useColorScheme() === 'dark';
+  const Width = useSharedValue(320);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
+  const Animation = useAnimatedStyle(() => {
+    return {
+      width: Width.value,
+    };
+  });
 
   const signupPressed = async () => {
-    setLoading(true);
-
     // FormData validations
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (username === '' || email === '' || password === '') {
       Alert.alert('Error', 'Please fill in all the fields!');
-      setLoading(false);
       return;
     }
     else if (username.length < 3) {
       Alert.alert('Error', 'Username must be at least 3 characters!');
-      setLoading(false);
       return;
     }
     else if (password.length < 6) {
       Alert.alert('Error', 'Password must be at least 6 characters!');
-      setLoading(false);
       return;
     }
     else if (!regex.test(email)) {
       Alert.alert('Error', 'Email Invalid!');
-      setLoading(false);
       return;
     }
 
-    // Signup api response
-    try {
-      let response = await authService.signup(username, email, password);
-      if (response.status >= 200 && response.status < 300) {
-        // User signup is successful
-        // Logging user in for auth token
-        authService.login(email, password).then((res) => {
-          if (res.status >= 200 && res.status < 300) {
-            // User is successfully authenticated
-            navigation.replace('Splash');
-          } else {
-            Alert.alert('Error', 'Something went wrong! Please sign in.');
-          }
-        }).catch((err) => {
-          console.error(err);
-        });
-      } else {
-        Alert.alert('Error', 'User already exists!');
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    setLoad(true);
+    Width.value = withSpring(50, {duration: 1000, dampingRatio: 0.7, stiffness: 130});
 
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    setLoading(false);
+    // Signup api call
+    setTimeout( async () => {
+      try {
+        let response = await authService.signup(username, email, password);
+        if (response.status >= 200 && response.status < 300) {
+          // User signup is successful
+          // Logging user in for auth token
+          authService.login(email, password).then((res) => {
+            if (res.status >= 200 && res.status < 300) {
+              // User is successfully authenticated
+              navigation.replace('Splash');
+            } else {
+              Alert.alert('Error', 'Something went wrong!\nPlease sign in.');
+            }
+          }).catch((err) => {
+            console.error(err);
+          });
+        } else {
+          Alert.alert('Error', 'User already exists!');
+        }
+      } catch (err) {
+        Alert.alert('Error', 'Server or network error!');
+        console.error(err);
+      }
+
+      Width.value = withSpring(320, {duration: 1000, dampingRatio: 0.7, stiffness: 130});
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setLoad(false);
+    }, 1250);
   };
 
   return (
@@ -123,23 +133,25 @@ const SignupScreen = ({navigation}: any) => {
             onChangeText={text => setPassword(text)}
             />
           </View>
-          {/* Button */}
-          <Pressable
-          className = "flex-col items-center justify-center mt-12 h-12 rounded-2xl bg-rose-500"
-          style={{backgroundColor: Dark ? loading ? color.primaryDark : color.secondaryDark : loading ? color.primaryLight : color.secondaryLight}}
-          onPress={signupPressed}
-          disabled={loading}
+        </View>
+        {/* Animated Button */}
+        <View className = "flex-col items-center justify-center">
+          <Button
+            className="justify-center items-center mt-12 h-12 rounded-[21px]"
+            style={[Animation, {backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}]}
+            onPress={signupPressed}
+            disabled={load}
           >
-            <Text
-            className = "text-lg font-bold"
-            style = {{color: loading ? Dark ? color.primaryDark : color.primaryLight : color.contrastLight}}
-            >Signup</Text>
-          </Pressable>
+            {load ? (
+              <ActivityIndicator animating={true} size={'large'} color={'white'} />
+            ) : (
+              <Text className="text-lg font-bold" style={{color: color.contrastLight}}>Signup</Text>
+            )}
+          </Button>
           <Pressable className="flex-row items-center justify-center my-5" onPress={() => navigation.navigate('Login')} >
             <Text className="font-bold mr-0.5" style={{color: Dark ? color.contrastLight : color.primaryDark}} >Already have an account?</Text>
             <Text className = "text-red-500 font-bold ml-0.5" >Login</Text>
           </Pressable>
-          <ActivityIndicator size="large" animating = {loading} color = {color.secondaryLight} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

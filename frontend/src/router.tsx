@@ -3,18 +3,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashOnboard from './auth/splash';
 import LoginScreen from './auth/login';
 import SignupScreen from './auth/signup';
+import MenuCard from './components/card';
 import TabRoutes from './bottomTabs';
-
-export type RootStackParamList = {
-  Splash: undefined;
-  Login: undefined;
-  Signup: undefined;
-  Tabs: undefined;
-};
 
 const Router = () => {
 
-  const Stack = createNativeStackNavigator<RootStackParamList>();
+  const Stack = createNativeStackNavigator();
 
   return (
     <Stack.Navigator
@@ -28,6 +22,15 @@ const Router = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="Tabs" component={TabRoutes} />
+      <Stack.Screen name="Menucard"
+        component={MenuCard}
+        options={{
+          animation: 'slide_from_bottom',
+          statusBarHidden: true,
+          statusBarTranslucent: true,
+          statusBarColor: 'transparent',
+        }}
+      />
     </Stack.Navigator>
   );
 };

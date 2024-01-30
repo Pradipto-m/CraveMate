@@ -1,8 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const localhost = '192.168.0.103';
-const apiUrl = `http://${localhost}:3000/api/user`;
+const apiUrl = 'http://192.168.0.103:3000/api/user';
 
 const authService = {
   // Signup api call

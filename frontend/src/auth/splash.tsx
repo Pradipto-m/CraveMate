@@ -5,7 +5,7 @@ import {color} from '../themes';
 import { fetchUser } from '../contexts/userStore';
 
 const SplashOnboard = ({navigation}: any) => {
-  const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
+  // const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
   const Dark = useColorScheme() === 'dark';
   const fetchUserAtom = useSetAtom(fetchUser);
 
@@ -14,14 +14,14 @@ const SplashOnboard = ({navigation}: any) => {
       try {
         await fetchUserAtom();
         navigation.replace('Tabs');
-        Alert.alert('Success', 'User Authorisation Successful!');
+        // Alert.alert('Success', 'User Authorisation Successful!');
       } catch (err) {
         console.error(err);
-        Alert.alert('Error', 'Authorisation error!\nPlease sign in again.');
+        Alert.alert('Error', `${err}!\nPlease sign in.`);
         navigation.replace('Login');
       }
     };
-    delay(1500).then(fetchUserData);
+    setTimeout(fetchUserData, 1250);
   });
 
   return (

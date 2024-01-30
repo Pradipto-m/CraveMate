@@ -43,3 +43,21 @@ export const popular = [
       desc: 'Bonus Family Pack',
     },
 ];
+
+export const addons = [
+  {
+    img: 'https://amiraspantry.com/wp-content/uploads/2021/01/szechuan-sauce-IG.jpg',
+    name: 'Szechuan Sauce : A hot and spicy sauce with bold flavors used in Chinese cuisine',
+    price: '60',
+  },
+  {
+    img: 'https://cdn.mos.cms.futurecdn.net/X7kpuBhEmwmQWusAXn3CqJ.jpg',
+    name: 'Indian pickle chutney : Rich flavour of lime n imli pickle is deliciously sweet and sour chutney',
+    price: '65',
+  },
+  {
+    img: 'https://thebigmansworld.com/wp-content/uploads/2022/05/dipping-sauce-for-sweet-potato-fries-recipe.jpeg',
+    name: 'Sweet n Sour Dip : A sauce, something sticky, something sweet, something creamy for crispy fries',
+    price: '50',
+  },
+];

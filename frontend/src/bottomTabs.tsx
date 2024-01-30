@@ -3,17 +3,20 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { useAtom } from 'jotai';
+import { cartAtom } from './contexts/cartStore';
 import { color } from './themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import HomePage from './components/home';
-import MenuCard from './components/menu';
+import MenuScreen from './components/menu';
 import ProfileSection from './components/profile';
-import Orders from './components/cart';
+import OrdersSection from './components/cart';
 
 const TabRoutes = () => {
     const Tab = createMaterialBottomTabNavigator();
     const Dark = useColorScheme() === 'dark';
+    const [cart] = useAtom(cartAtom);
 
     return (
       <Tab.Navigator
@@ -36,7 +39,7 @@ const TabRoutes = () => {
           }}
         />
         <Tab.Screen name="Menu"
-          component={MenuCard}
+          component={MenuScreen}
           options={{
             tabBarLabel: '',
             tabBarIcon: ({ focused }) => (
@@ -56,9 +59,10 @@ const TabRoutes = () => {
           }}
         />
         <Tab.Screen name="Cart"
-          component={Orders}
+          component={OrdersSection}
           options={{
             tabBarLabel: '',
+            tabBarBadge: cart.size > 0 ? cart.size : undefined,
             tabBarIcon: ({ focused }) => (
               focused ? <Ionicons name="cart" size={31} color={color.contrastLight} style={{marginTop: -4}} />
               : <Feather name="shopping-cart" size={28} color={Dark ? color.contrastLight : color.contrastDark} />
