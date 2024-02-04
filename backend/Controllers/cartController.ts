@@ -1,15 +1,20 @@
 import {Request, Response} from 'express';
 import UserCart from '../Models/cartModel';
+import Product from '../Models/productModel';
 
 const addToCart = async (req: Request, res: Response) => {
   try {
     const { userId, productId } = req.body;
     if (!userId || !productId) {
-      return res.status(400).json({error: 'Please provide a proper userId and productId'});
+      return res.status(400).json({
+        error: 'Please provide a proper userId, productId and amount'
+      });
     }
     
     // Check if the user's cart exists
     let cart = await UserCart.findOne({userId});
+    const price = await Product.findById(productId)
+      .then((product) => { return product?.price });
     if (cart) {
       let itemExists = false;
       // Find if the product already exists in the cart
@@ -23,11 +28,13 @@ const addToCart = async (req: Request, res: Response) => {
         // If the product is not present, add it to cart
         cart.products.push({ productId, quantity: 1 });
       }
+      cart.amount += price!; // update the cart amount
     // If the user's cart does not exist, create a new cart
     } else {
       cart = new UserCart({
         userId,
         products: { productId, quantity: 1 },
+        amount: price,
       });
     }
     // Save the cart to the database
@@ -54,6 +61,9 @@ const removeItem = async (req: Request, res: Response) => {
     if (!cart) {
       return res.status(404).json({error: 'Cart not found'});
     }
+    const price = await Product.findById(productId)
+      .then((product) => { return product?.price });
+
     // now find the product and remove it
     for (let i = 0; i < cart.products.length; i++) {
       if (cart.products[i].productId === productId) {
@@ -62,6 +72,7 @@ const removeItem = async (req: Request, res: Response) => {
         } else {
           cart.products.splice(i, 1);
         }
+        cart.amount -= price!;
       }
     }
 

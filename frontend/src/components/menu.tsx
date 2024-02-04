@@ -73,6 +73,7 @@ const MenuScreen = ({navigation}: any) => {
       {/* scrollable menu items */}
       <FlatList
         className="mb-36"
+        showsVerticalScrollIndicator={false}
         refreshing={refresh}
         onRefresh={() => {
           setRefresh(true); categoryPressed('all'); setRefresh(false);

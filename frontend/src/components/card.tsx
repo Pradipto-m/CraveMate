@@ -58,16 +58,14 @@ const MenuCard = ({route}: any) => {
       </View>
       {/* Reanimated scroll effect */}
       <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 80}}
         ref={scrollRef}
         scrollEventThrottle={16}
       >
         <Animated.Image
         source={{ uri: item?.img }}
-        width={W}
-        height={H}
-        resizeMode="cover"
-        style={Animation}
+        style={[Animation, {width: W, height: H, borderBottomLeftRadius: 32, borderBottomRightRadius: 32, resizeMode: 'cover'}]}
         />
         <View className="mx-4">
           <Text className="text-2xl font-bold mt-3" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{item?.name}</Text>

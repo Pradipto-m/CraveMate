@@ -4,8 +4,8 @@ import UserCart from '../Models/cartModel';
 
 const placeOrder = async (req: Request, res: Response) => {
   try {
-    const {userId, amount, address, phone} = req.body;
-    if (!userId || !amount || !address || !phone) {
+    const {userId, address, phone} = req.body;
+    if (!userId || !address || !phone) {
       return res.status(400).json({error: "Order details are required!"});
     }
 
@@ -15,6 +15,7 @@ const placeOrder = async (req: Request, res: Response) => {
       return res.status(404).json({error: "Cart not found"});
     }
     const products = cart?.products;
+    const amount = cart?.amount + Math.ceil(cart?.amount * 0.05) + 10;
 
     const order = new OrderItem({
       userId,
@@ -28,9 +29,8 @@ const placeOrder = async (req: Request, res: Response) => {
     await order.save().then((order) => {
       res.status(201).json(order);
       // since the order is placed, we can clear the cart
-      UserCart.findOneAndDelete({userId}).then(() => {
-        console.log("Cart cleared");
-      }).catch((err) => {
+      UserCart.findOneAndDelete({userId})
+      .catch((err) => {
         console.log(err);
       });
     }).catch((err) => {
