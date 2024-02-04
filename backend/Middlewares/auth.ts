@@ -13,7 +13,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ err: 'Unauthorized' });
     }
 
-    req.body.userid = verified.id;
+    req.body.user = verified.id;
     next();
 
   } catch (err) {

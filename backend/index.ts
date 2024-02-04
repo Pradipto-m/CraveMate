@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import authRouter from './Routes/authRoute';
 import productRouter from './Routes/productRoute';
+import cartRouter from './Routes/cartRoute';
+import orderRouter from './Routes/orderRoute';
 
 // Initialization
 dotenv.config();
@@ -22,13 +24,15 @@ mongoose.connect(db!).then(() => {
 }).catch((err) => {console.log(err)});
 
 // Middlewares
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 // Routes
 app.use(authRouter);
 app.use(productRouter);
+app.use(cartRouter);
+app.use(orderRouter);
 
 // API
 app.get('/', (req, res) => {

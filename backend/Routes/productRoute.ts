@@ -12,4 +12,6 @@ productRouter.get('/api/product/category', auth, productController.categoryProdu
 
 productRouter.get('/api/product/search/:name', auth, productController.searchProducts);
 
+productRouter.get('/api/product/:id', auth, productController.fetchById);
+
 export default productRouter;
