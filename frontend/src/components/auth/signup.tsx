@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable, ActivityIndicator, Alert, useColorScheme } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { color } from '../themes';
+import { color } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import authService from '../services/authService';
+import authService from '../../services/authService';
 
 const Button = Animated.createAnimatedComponent(Pressable);
 
@@ -84,7 +84,7 @@ const SignupScreen = ({navigation}: any) => {
     style = {{backgroundColor: Dark ? color.primaryDark : color.primaryLight}}
     >
       <View>
-        <Image className = "w-[410px] h-[215px]" source = {require('../../assets/slice.png')} />
+        <Image className = "w-[410px] h-[215px]" source = {require('../../../assets/slice.png')} />
       </View>
       {/* SignIn form */}
       <KeyboardAvoidingView>

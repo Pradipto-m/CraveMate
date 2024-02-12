@@ -8,10 +8,10 @@ import { cartAtom } from './contexts/cartStore';
 import { color } from './themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import HomePage from './components/home';
-import MenuScreen from './components/menu';
-import ProfileSection from './components/profile';
-import OrdersSection from './components/cart';
+import HomePage from './components/screens/home';
+import MenuScreen from './components/screens/menu';
+import ProfileSection from './components/screens/profile';
+import OrdersSection from './components/screens/cart';
 
 const TabRoutes = () => {
     const Tab = createMaterialBottomTabNavigator();

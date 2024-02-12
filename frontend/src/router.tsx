@@ -1,9 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashOnboard from './auth/splash';
-import LoginScreen from './auth/login';
-import SignupScreen from './auth/signup';
-import MenuCard from './components/card';
+import SplashOnboard from './components/auth/splash';
+import LoginScreen from './components/auth/login';
+import SignupScreen from './components/auth/signup';
+import MenuCard from './components/screens/card';
 import TabRoutes from './bottomTabs';
 
 const Router = () => {

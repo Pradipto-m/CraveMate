@@ -1,8 +1,8 @@
 import {View, Text, Image, ActivityIndicator, Alert, useColorScheme, ToastAndroid} from 'react-native';
 import React, { useEffect } from 'react';
 import { useSetAtom } from 'jotai';
-import {color} from '../themes';
-import { fetchUser } from '../contexts/userStore';
+import {color} from '../../themes';
+import { fetchUser } from '../../contexts/userStore';
 
 const SplashOnboard = ({navigation}: any) => {
   // const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
@@ -30,7 +30,7 @@ const SplashOnboard = ({navigation}: any) => {
       style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight}}>
       <Image
         className="w-32 h-40 mb-4"
-        source={require('../../assets/splash.png')}
+        source={require('../../../assets/splash.png')}
       />
       <Text
         className="text-xl font-bold"

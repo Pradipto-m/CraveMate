@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, Text, SafeAreaView, useColorScheme, Image, Pressable, Alert } from 'react-native';
-import { color } from '../themes';
+import { color } from '../../themes';
 import { useAtom, useSetAtom } from 'jotai';
-import { logoutAtom, userAtom } from '../contexts/userStore';
+import { logoutAtom, userAtom } from '../../contexts/userStore';
 
 const ProfileSection = ({navigation} : any) => {
 
@@ -38,7 +38,7 @@ const ProfileSection = ({navigation} : any) => {
       <View className="h-[1.5px] mx-4 bg-slate-700" />
       {/* user profile */}
       <View className="flex-row items-center" >
-        <Image source={require('../../assets/userprofile.png')} className="w-32 h-32 mx-7 my-3" />
+        <Image source={require('../../../assets/userprofile.png')} className="w-32 h-32 mx-7 my-3" />
         <View className="flex-col" >
           <Text className="text-xl font-bold ml-5" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{user.username}</Text>
           <Text className="text-xl font-bold ml-5" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{user.email}</Text>

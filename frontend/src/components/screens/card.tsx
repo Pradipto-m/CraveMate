@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, Dimensions, SafeAreaView, useColorScheme, Pressable, Image, ToastAndroid } from 'react-native';
+import { View, Text, Dimensions, SafeAreaView, useColorScheme, Pressable, ToastAndroid } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 import { useAtom, useSetAtom } from 'jotai';
-import { userAtom } from '../contexts/userStore';
-import { productAtom } from '../contexts/productStore';
-import { addToCart } from '../contexts/cartStore';
-import { color } from '../themes';
+import { userAtom } from '../../contexts/userStore';
+import { productAtom } from '../../contexts/productStore';
+import { addToCart } from '../../contexts/cartStore';
+import { color } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
-import { addons } from '../utils';
+import { addons } from '../../utils';
+import AddonItems from '../addonItem';
 
 const W = Dimensions.get('window').width;
 const H = 300;
@@ -97,16 +98,7 @@ const MenuCard = ({route}: any) => {
             className="rounded-full mb-5"
             style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}}
             >
-              <View className="flex-row justify-between items-center">
-                <Image source={{uri: addon.img}} className="w-20 h-20 rounded-full"/>
-                <Text className="flex-1 mx-2" style={{color: Dark ? color.contrastLight : color.primaryDark, lineHeight: 17}}>{addon.name}</Text>
-                <View
-                className="flex-row justify-center items-center h-20 w-20 rounded-full"
-                style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}}
-                >
-                  <Feather name="plus" size={26} color={'white'}/>
-                </View>
-              </View>
+              <AddonItems {...addon}/>
             </View>
           ))}
         </View>

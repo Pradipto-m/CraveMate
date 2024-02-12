@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, SafeAreaView, ScrollView, TextInput, Pressable, useColorScheme, FlatList, TouchableOpacity } from 'react-native';
 import { useAtom, useSetAtom } from 'jotai';
-import { color } from '../themes';
+import { color } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
-import { productAtom, fetchProducts, fetchByCategory, fetchBySearch } from '../contexts/productStore';
+import { productAtom, fetchProducts, fetchByCategory, fetchBySearch } from '../../contexts/productStore';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const EmptyList = () => (
   <View className="items-center">
-    <Image source={require('../../assets/empty.png')}/>
+    <Image source={require('../../../assets/empty.png')}/>
     <Text className="font-medium">Nothing Found</Text>
   </View>
 );
@@ -74,6 +74,7 @@ const MenuScreen = ({navigation}: any) => {
       <FlatList
         className="mb-36"
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 95}}
         refreshing={refresh}
         onRefresh={() => {
           setRefresh(true); categoryPressed('all'); setRefresh(false);
