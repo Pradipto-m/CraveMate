@@ -1,15 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, Text, SafeAreaView, useColorScheme, Image, Pressable, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { color } from '../themes';
 import { useAtom, useSetAtom } from 'jotai';
 import { logoutAtom, userAtom } from '../contexts/userStore';
 
-const ProfileSection = () => {
+const ProfileSection = ({navigation} : any) => {
 
   const Dark = useColorScheme() === 'dark';
-  const navigation = useNavigation();
   const [user] = useAtom(userAtom);
   const logoutUser = useSetAtom(logoutAtom);
 

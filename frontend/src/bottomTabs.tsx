@@ -22,7 +22,7 @@ const TabRoutes = () => {
       <Tab.Navigator
       initialRouteName="Home"
       labeled={false}
-      barStyle={{backgroundColor: Dark ? color.contrastDark : color.contrastLight, marginBottom: -5}}
+      barStyle={{backgroundColor: Dark ? color.bottomTabsDark : color.bottomTabsLight, position: 'absolute', marginBottom: -5, zIndex: 100}}
       activeIndicatorStyle={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight, height: 55, width: 80, borderRadius: 50}}
       sceneAnimationEnabled={true}
       shifting={true}
@@ -48,6 +48,17 @@ const TabRoutes = () => {
             ),
           }}
         />
+        <Tab.Screen name="Cart"
+          component={OrdersSection}
+          options={{
+            tabBarLabel: '',
+            tabBarBadge: cart.products.length > 0 ? cart.products.length : undefined,
+            tabBarIcon: ({ focused }) => (
+              focused ? <Ionicons name="cart" size={31} color={color.contrastLight} style={{marginTop: -4}} />
+              : <Feather name="shopping-cart" size={28} color={Dark ? color.contrastLight : color.contrastDark} />
+            ),
+          }}
+        />
         <Tab.Screen name="Profile"
           component={ProfileSection}
           options={{
@@ -55,17 +66,6 @@ const TabRoutes = () => {
             tabBarIcon: ({ focused }) => (
               focused ? <Ionicons name="person" size={31} color={color.contrastLight} style={{marginTop: -4}} />
               : <Feather name="user" size={28} color={Dark ? color.contrastLight : color.contrastDark} />
-            ),
-          }}
-        />
-        <Tab.Screen name="Cart"
-          component={OrdersSection}
-          options={{
-            tabBarLabel: '',
-            tabBarBadge: cart.size > 0 ? cart.size : undefined,
-            tabBarIcon: ({ focused }) => (
-              focused ? <Ionicons name="cart" size={31} color={color.contrastLight} style={{marginTop: -4}} />
-              : <Feather name="shopping-cart" size={28} color={Dark ? color.contrastLight : color.contrastDark} />
             ),
           }}
         />

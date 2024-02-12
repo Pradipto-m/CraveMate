@@ -1,11 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, Dimensions, SafeAreaView, useColorScheme, Pressable, Image } from 'react-native';
+import { View, Text, Dimensions, SafeAreaView, useColorScheme, Pressable, Image, ToastAndroid } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
-import { color } from '../themes';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
+import { userAtom } from '../contexts/userStore';
 import { productAtom } from '../contexts/productStore';
-import { cartAtom } from '../contexts/cartStore';
+import { addToCart } from '../contexts/cartStore';
+import { color } from '../themes';
 import Feather from 'react-native-vector-icons/Feather';
 import { addons } from '../utils';
 
@@ -18,7 +19,6 @@ const MenuCard = ({route}: any) => {
   const id = route.params;
   const [product] = useAtom(productAtom);
   const item = product.find((i) => i._id === id);
-  const [_, setCart] = useAtom(cartAtom);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
 
@@ -39,13 +39,22 @@ const MenuCard = ({route}: any) => {
     };
   });
 
+  const [user] = useAtom(userAtom);
+  const addCart = useSetAtom(addToCart);
+
+  const cartBtn = async () => {
+    // Add to cart
+    await addCart(user._id, item?._id!);
+    ToastAndroid.show('Added to cart', ToastAndroid.SHORT);
+  };
+
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight, minHeight: '100%'}}>
       {/* Floating action buttons */}
       <Pressable
         className="flex-row items-center justify-between px-3 w-32 h-16 rounded-3xl absolute z-50 bottom-8 right-8"
         style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}}
-        onPress={() => setCart((cart) => ({...cart, size: cart.size + 1}))}
+        onPress={cartBtn}
       >
         <Feather name="shopping-cart" size={25} color="white" />
         <Text className="font-bold text-white">Add to cart</Text>
@@ -91,14 +100,12 @@ const MenuCard = ({route}: any) => {
               <View className="flex-row justify-between items-center">
                 <Image source={{uri: addon.img}} className="w-20 h-20 rounded-full"/>
                 <Text className="flex-1 mx-2" style={{color: Dark ? color.contrastLight : color.primaryDark, lineHeight: 17}}>{addon.name}</Text>
-                <Pressable
+                <View
                 className="flex-row justify-center items-center h-20 w-20 rounded-full"
                 style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}}
-                onPress={() => setCart((cart) => ({...cart, size: cart.size + 1}))}
                 >
-                  <Feather name="plus" size={24} color={'white'}/>
-                  <Text className="font-bold text-xl text-white">{addon.price}</Text>
-                </Pressable>
+                  <Feather name="plus" size={26} color={'white'}/>
+                </View>
               </View>
             </View>
           ))}

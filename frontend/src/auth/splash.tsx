@@ -1,4 +1,4 @@
-import {View, Text, Image, ActivityIndicator, Alert, useColorScheme} from 'react-native';
+import {View, Text, Image, ActivityIndicator, Alert, useColorScheme, ToastAndroid} from 'react-native';
 import React, { useEffect } from 'react';
 import { useSetAtom } from 'jotai';
 import {color} from '../themes';
@@ -14,7 +14,7 @@ const SplashOnboard = ({navigation}: any) => {
       try {
         await fetchUserAtom();
         navigation.replace('Tabs');
-        // Alert.alert('Success', 'User Authorisation Successful!');
+        ToastAndroid.show('User logged in successfully!', ToastAndroid.SHORT);
       } catch (err) {
         console.error(err);
         Alert.alert('Error', `${err}!\nPlease sign in.`);

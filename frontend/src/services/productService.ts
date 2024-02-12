@@ -65,6 +65,22 @@ const productService = {
       throw err;
     }
   },
+
+  fetchById: async (id: string) => {
+    try {
+      const token = await AsyncStorage.getItem('authtoken');
+      const response = await axios.get(`${apiUrl}/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return response;
+
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
 };
 
 export default productService;

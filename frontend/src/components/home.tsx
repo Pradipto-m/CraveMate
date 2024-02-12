@@ -1,15 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, SafeAreaView, ScrollView, Dimensions, useColorScheme } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useAtom, useSetAtom } from 'jotai';
+import { userAtom } from '../contexts/userStore';
+import { fetchUserCart } from '../contexts/cartStore';
 import { color } from '../themes';
 import { banner, trending, popular } from '../utils';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const HomePage = () => {
 
   const width = Dimensions.get('window').width;
   const Dark = useColorScheme() === 'dark';
+  const [user] = useAtom(userAtom);
+  const fetchCart = useSetAtom(fetchUserCart);
+
+  useEffect(() => {
+    // cart data
+    const getUserCart = async () => {
+      await fetchCart(user._id)
+      .catch((err) => console.log(err));
+    };
+    getUserCart();
+  }, [fetchCart, user._id]);
 
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight}}>

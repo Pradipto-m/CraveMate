@@ -13,8 +13,8 @@ const addToCart = async (req: Request, res: Response) => {
     
     // Check if the user's cart exists
     let cart = await UserCart.findOne({userId});
-    const price = await Product.findById(productId)
-      .then((product) => { return product?.price });
+    const product = await Product.findById(productId);
+    const price = product?.price;
     if (cart) {
       let itemExists = false;
       // Find if the product already exists in the cart
@@ -38,7 +38,7 @@ const addToCart = async (req: Request, res: Response) => {
       });
     }
     // Save the cart to the database
-    await cart.save().then((cart) => {
+    cart.save().then((cart) => {
       res.status(201).json(cart);
     }).catch((err) => {
       res.status(500).json({error: err});
@@ -61,8 +61,8 @@ const removeItem = async (req: Request, res: Response) => {
     if (!cart) {
       return res.status(404).json({error: 'Cart not found'});
     }
-    const price = await Product.findById(productId)
-      .then((product) => { return product?.price });
+    const product = await Product.findById(productId);
+    const price = product?.price;
 
     // now find the product and remove it
     for (let i = 0; i < cart.products.length; i++) {
@@ -76,7 +76,7 @@ const removeItem = async (req: Request, res: Response) => {
       }
     }
 
-    await cart.save().then((cart) => {
+    cart.save().then((cart) => {
       // If the cart is empty, delete the cart
       if (cart.products.length === 0) {
         UserCart.findOneAndDelete({userId}).then(() => {
