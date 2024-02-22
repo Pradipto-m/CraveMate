@@ -6,13 +6,7 @@ import { color } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
 import { productAtom, fetchProducts, fetchByCategory, fetchBySearch } from '../../contexts/productStore';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-
-const EmptyList = () => (
-  <View className="items-center">
-    <Image source={require('../../../assets/empty.png')}/>
-    <Text className="font-medium">Nothing Found</Text>
-  </View>
-);
+import EmptyList from '../emptyList';
 
 const MenuScreen = ({navigation}: any) => {
 

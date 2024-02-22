@@ -45,12 +45,12 @@ const placeOrder = async (req: Request, res: Response) => {
 
 const getOrders = async (req: Request, res: Response) => {
   try {
-    const {userId} = req.body;
+    const userId = req.params.id;
     if (!userId) {
       return res.status(400).json({error: "userId is required!"});
     }
 
-    const orders = await OrderItem.find({ userId });
+    const orders = await OrderItem.find({ userId: userId });
     if (!orders) {
       return res.status(404).json({error: "No orders found"});
     }

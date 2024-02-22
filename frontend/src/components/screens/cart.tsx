@@ -1,19 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, SafeAreaView, useColorScheme, ScrollView, ImageBackground, Pressable, Image, ToastAndroid } from 'react-native';
+import { View, Text, SafeAreaView, useColorScheme, ScrollView, ImageBackground, Pressable, ToastAndroid } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { color } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
+import EmptyList from '../emptyList';
 import { useAtom, useSetAtom } from 'jotai';
 import { addToCart, cartAtom, itemsAtom, removeFromCart } from '../../contexts/cartStore';
 import { userAtom } from '../../contexts/userStore';
-
-const EmptyList = () => (
-  <View className="items-center">
-    <Image source={require('../../../assets/empty.png')}/>
-    <Text className="font-medium">Your Cart is Empty</Text>
-  </View>
-);
 
 const OrdersSection = () => {
 

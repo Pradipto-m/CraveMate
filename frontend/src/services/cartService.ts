@@ -11,6 +11,9 @@ const cartService = {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
+        validateStatus: (status) => {
+          return status < 500;
+        },
       }).catch((err) => {console.error(err); throw err;});
       return res;
 
@@ -51,8 +54,7 @@ const cartService = {
     try {
       const data = { userId, productId };
       const token = await AsyncStorage.getItem('authtoken');
-      const res = await axios.delete(`${apiUrl}/remove`,
-      {
+      const res = await axios.delete(`${apiUrl}/remove`, {
         data,
         headers: {
           'Authorization': `Bearer ${token}`,

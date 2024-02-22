@@ -7,8 +7,7 @@ const productService = {
   getAll: async () => {
     try {
       const token = await AsyncStorage.getItem('authtoken');
-      let response = await axios.get(`${apiUrl}/all`,
-      {
+      let response = await axios.get(`${apiUrl}/all`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -27,8 +26,7 @@ const productService = {
   getByGenre: async (genre: string) => {
     try {
       const token = await AsyncStorage.getItem('authtoken');
-      let response = await axios.get(`${apiUrl}/category`,
-      {
+      let response = await axios.get(`${apiUrl}/category`,{
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -50,8 +48,7 @@ const productService = {
   searchProduct: async (name: string) => {
     try {
       const token = await AsyncStorage.getItem('authtoken');
-      let response = await axios.get(`${apiUrl}/search/${name}`,
-      {
+      let response = await axios.get(`${apiUrl}/search/${name}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

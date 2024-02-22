@@ -6,4 +6,6 @@ const orderRouter = express.Router();
 
 orderRouter.post('/api/cart/order', auth, orderController.placeOrder);
 
+orderRouter.get('/api/orders/user/:id', auth, orderController.getOrders);
+
 export default orderRouter;
