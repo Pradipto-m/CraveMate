@@ -1,13 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, Text, SafeAreaView, useColorScheme, ScrollView, ImageBackground, Pressable, ToastAndroid } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { color } from '../../themes';
-import Feather from 'react-native-vector-icons/Feather';
-import EmptyList from '../emptyList';
 import { useAtom, useSetAtom } from 'jotai';
-import { addToCart, cartAtom, itemsAtom, removeFromCart } from '../../contexts/cartStore';
 import { userAtom } from '../../contexts/userStore';
+import { addToCart, cartAtom, itemsAtom, removeFromCart } from '../../contexts/cartStore';
+import LinearGradient from 'react-native-linear-gradient';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import EmptyList from '../emptyList';
 
 const OrdersSection = () => {
 
@@ -33,10 +34,31 @@ const OrdersSection = () => {
 
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight, minHeight: '100%'}}>
+      {/* Floating Order Button */}
+      <View className="flex-row absolute z-50 bottom-36 mx-7 rounded-[20px]" style={{bottom: cartItem.length >= 5 ? 148 : 84, backgroundColor: Dark ? 'rgba(65, 78, 90, 0.82)' : 'rgba(255, 230, 230, 0.79)'}}>
+        <View className="justify-center px-3">
+          <Ionicons name="bag-handle" size={37} color={Dark ? 'floralwhite' : 'dimgray'} />
+        </View>
+        <View className="flex-1 py-[7px]">
+          <Text style={{color: Dark ? color.contrastLight : color.primaryDark}}>Total Amount:</Text>
+          <View className="flex-row">
+            <Text className="font-bold text-[32px] text-red-400">{cart.amount ? cart.amount : 0}</Text>
+            <Text className="text-sm" style={{color: Dark ? color.contrastLight : color.primaryDark}}> *</Text>
+          </View>
+        </View>
+        <Pressable
+        className="flex-row justify-center items-center rounded-[20px] w-28"
+        style={{backgroundColor: 'rgba(245, 64, 94, 0.8)'}}
+        onPress={() => ToastAndroid.show('Order Placed!', ToastAndroid.SHORT)}
+        >
+          <Text className="font-semibold text-xl text-red-50">Order Now!</Text>
+        </Pressable>
+      </View>
+
       <View className="flex-row items-center justify-between mx-4 h-16" >
         <Text
         className="text-3xl font-bold text-center"
-        style={{color: Dark ? color.contrastLight : color.primaryDark}}
+        style={{color: Dark ? color.contrastLight : color.contrastDark}}
         >{user.username}'s Cart:</Text>
       </View>
       <View className="h-[1.5px] mx-4 bg-slate-700" />
@@ -66,21 +88,21 @@ const OrdersSection = () => {
               >
                 <Text className="text-xl font-bold mr-2" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{item.name}</Text>
                 <Text className="text-xl font-bold mr-2" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{item.restaurant}</Text>
-                <Text className="text-xl font-bold mr-2 text-white bg-red-500 px-0.5 rounded-md">₹{item.price * cart.products[index].quantity}</Text>
+                <Text className="text-xl font-bold mr-2 text-white bg-red-500 px-0.5 rounded-md">₹{(cart?.products[index]?.quantity || 0) * item.price}</Text>
               </LinearGradient>
             </ImageBackground>
             <View className="flex-col justify-between items-center ml-px w-12 py-1" style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}}>
               <Pressable onPress={() => addClicked(item._id)}>
                 <Feather name="plus-circle" size={26} color={Dark ? color.contrastLight : color.primaryDark} />
               </Pressable>
-              <Text className="text-xl font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{cart.products[index].quantity}</Text>
+              <Text className="text-xl font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{cart?.products[index]?.quantity}</Text>
               <Pressable onPress={() => removeClicked(item._id)}>
                 <Feather name="minus-circle" size={26} color={Dark ? color.contrastLight : color.primaryDark} />
               </Pressable>
             </View>
           </View>
         )) : <EmptyList /> }
-        < View className="h-32" />
+        < View className="h-[230px]" />
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect } from 'react';
-import { View, Text, Image, SafeAreaView, ScrollView, Dimensions, useColorScheme } from 'react-native';
+import { View, Text, Image, SafeAreaView, ScrollView, useColorScheme, useWindowDimensions } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAtom, useSetAtom } from 'jotai';
@@ -12,7 +12,7 @@ import Recommendations from '../recommendations';
 
 const HomePage = () => {
 
-  const width = Dimensions.get('window').width;
+  const width = useWindowDimensions().width;
   const Dark = useColorScheme() === 'dark';
   const [user] = useAtom(userAtom);
   const fetchCart = useSetAtom(fetchUserCart);

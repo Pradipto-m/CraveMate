@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, Dimensions, SafeAreaView, useColorScheme, Pressable, ToastAndroid } from 'react-native';
+import { View, Text, SafeAreaView, useColorScheme, Pressable, ToastAndroid, useWindowDimensions } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 import { useAtom, useSetAtom } from 'jotai';
 import { userAtom } from '../../contexts/userStore';
@@ -11,11 +11,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import { addons } from '../../utils';
 import AddonItems from '../addonItem';
 
-const W = Dimensions.get('window').width;
-const H = 300;
-
 const MenuCard = ({route}: any) => {
 
+  const W = useWindowDimensions().width;
+  const H = 300;
   const Dark = useColorScheme() === 'dark';
   const id = route.params;
   const [product] = useAtom(productAtom);

@@ -33,7 +33,7 @@ const ProfileSection = ({navigation} : any) => {
       <View className="flex-row items-center justify-between mx-4 h-16" >
         <Text
         className="text-3xl font-bold text-center"
-        style={{color: Dark ? color.contrastLight : color.primaryDark}}
+        style={{color: Dark ? color.contrastLight : color.contrastDark}}
         >Hi Foodie,</Text>
         <Pressable
           onPress={() => Alert.alert(
@@ -57,14 +57,16 @@ const ProfileSection = ({navigation} : any) => {
       </View>
 
       {/* User's orders status */}
-      <View className="items-center mt-16">
-        <Text className="text-[27.5px] font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}}>Your Orders:</Text>
+      <View className="items-center mt-14">
+        <Text className="text-[27.5px] font-bold" style={{color: Dark ? color.contrastLight : color.contrastDark}}>Your Orders:</Text>
       </View>
-      <View className="h-[1.5px] mx-4 mt-3 bg-slate-700" />
-      <ScrollView showsVerticalScrollIndicator={false} >
+      <View className="h-[1.5px] mx-4 mt-6 bg-slate-700" />
+      {/* Scrollable orders list */}
+      <ScrollView showsVerticalScrollIndicator={true} style={{flex: 1}}>
+        <View>
         {orders.length === 0 ? < EmptyList /> :
         orders.map((order, index) => (
-          <View key={index} className="flex-col mx-6 mt-9">
+          <View key={index} className="flex-col mx-6 mt-8">
           <View className="flex-col items-start rounded-t-2xl p-2" style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}}>
             {order.products.map((product, id) => (
               <Text key={id} className="text-lg font-semibold" style={{color: Dark ? color.contrastLight : color.primaryDark}}>• {product.itemName} x {product.quantity}</Text>
@@ -78,6 +80,8 @@ const ProfileSection = ({navigation} : any) => {
           </View>
         </View>
         ))}
+        </View>
+        <View className="h-24"/>
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import { View, Text, useColorScheme, Dimensions, Image } from 'react-native';
+import { View, Text, useColorScheme, Image, useWindowDimensions } from 'react-native';
 import React from 'react';
 import { color } from '../themes';
 
 const Recommendations = () => {
   const Dark = useColorScheme() === 'dark';
-  const W = Dimensions.get('window').width;
+  const W = useWindowDimensions().width;
   return (
     <View className="flex-row flex-wrap justify-center items-center mt-4">
       <Text className="font-bold text-base" style={{color: Dark ? color.contrastLight : color.primaryDark}}>Popular Deals</Text>

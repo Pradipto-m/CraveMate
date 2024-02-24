@@ -66,13 +66,20 @@ export const removeFromCart = atom(
   null,
   async (get, set, userId: string, productId: string) => {
     try {
+      const oldCart = get(cartAtom);
+      const quantity = oldCart.products.find(
+        (item:any) => item.productId === productId)!.quantity;
+      const empty = oldCart.products.length === 1
+        && oldCart.products[0].quantity === 1;
+
       const res = await cartService.removeItem(userId, productId);
       if (res.status < 300) {
         const cart = res.data;
-        set(cartAtom, cart);
+        // if the cart is empty, reset the cartAtom
+        empty ? set(cartAtom, initialCart) : set(cartAtom, cart);
         // remove the product from the itemsList
         // only if it doesn't exists in the cart
-        if (!cart.products.find((item:any) => item.productId === productId)) {
+        if ( quantity === 1 ) {
           set(itemsAtom, (prev) => prev.filter(
             (item) => item._id !== productId));
         }
