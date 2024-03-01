@@ -90,3 +90,16 @@ export const removeFromCart = atom(
     }
   }
 );
+
+export const emptyCart = atom(
+  get => get(cartAtom),
+  async (get, set) => {
+    try {
+      set(cartAtom, initialCart);
+      set(itemsAtom, []);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+);

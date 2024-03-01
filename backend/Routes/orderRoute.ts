@@ -8,4 +8,6 @@ orderRouter.post('/api/cart/order', auth, orderController.placeOrder);
 
 orderRouter.get('/api/orders/user/:id', auth, orderController.getOrders);
 
+orderRouter.post('/api/order/pay', orderController.paymentController);
+
 export default orderRouter;

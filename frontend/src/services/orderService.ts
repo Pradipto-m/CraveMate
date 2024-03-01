@@ -24,6 +24,39 @@ const orderService = {
       throw err;
     }
   },
+
+  placeOrder : async (
+  userId: string,
+  address: string,
+  phone: string) => {
+    try {
+      const data = {userId, address, phone};
+      const token = await AsyncStorage.getItem('authtoken');
+      const res = await axios.post(`${apiUrl}/cart/order`, data, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      .catch((err) => {console.error(err); throw err;});
+
+      return res;
+
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  paymentService : async (amount: number) => {
+    try {
+      const res = await axios.post(`${apiUrl}/order/pay`, {amount});
+      return res.data;
+
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
 };
 
 export default orderService;

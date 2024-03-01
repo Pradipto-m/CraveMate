@@ -11,7 +11,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import HomePage from './components/screens/home';
 import MenuScreen from './components/screens/menu';
 import ProfileSection from './components/screens/profile';
-import OrdersSection from './components/screens/cart';
+import CartSection from './components/screens/cart';
 
 const TabRoutes = () => {
     const Tab = createMaterialBottomTabNavigator();
@@ -49,7 +49,7 @@ const TabRoutes = () => {
           }}
         />
         <Tab.Screen name="Cart"
-          component={OrdersSection}
+          component={CartSection}
           options={{
             tabBarLabel: '',
             tabBarBadge: cart.products.length > 0 ? cart.products.length : undefined,

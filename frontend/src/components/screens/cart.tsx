@@ -1,16 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, SafeAreaView, useColorScheme, ScrollView, ImageBackground, Pressable, ToastAndroid } from 'react-native';
+import { View, Text, SafeAreaView, useColorScheme, ImageBackground, Pressable, ToastAndroid } from 'react-native';
 import { color } from '../../themes';
 import { useAtom, useSetAtom } from 'jotai';
 import { userAtom } from '../../contexts/userStore';
 import { addToCart, cartAtom, itemsAtom, removeFromCart } from '../../contexts/cartStore';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EmptyList from '../emptyList';
 
-const OrdersSection = () => {
+const CartSection = ({navigation}: any) => {
 
   const Dark = useColorScheme() === 'dark';
   const [cartItem] = useAtom(itemsAtom);
@@ -49,7 +50,11 @@ const OrdersSection = () => {
         <Pressable
         className="flex-row justify-center items-center rounded-[20px] w-28"
         style={{backgroundColor: 'rgba(245, 64, 94, 0.8)'}}
-        onPress={() => ToastAndroid.show('Order Placed!', ToastAndroid.SHORT)}
+        onPress={() => {
+          if (cart?.amount !== 0 || cartItem.length !== 0) {
+            navigation.navigate('Order');
+          }
+        }}
         >
           <Text className="font-semibold text-xl text-red-50">Order Now!</Text>
         </Pressable>
@@ -62,7 +67,7 @@ const OrdersSection = () => {
         >{user.username}'s Cart:</Text>
       </View>
       <View className="h-[1.5px] mx-4 bg-slate-700" />
-      <ScrollView>
+      <Animated.ScrollView showsVerticalScrollIndicator={false} entering={FadeInDown.duration(700)}>
         {cartItem.length !== 0 ? cartItem.map((item, index) => (
           <View key={index} className="flex-row mx-7 mt-7">
             <ImageBackground
@@ -103,9 +108,9 @@ const OrdersSection = () => {
           </View>
         )) : <EmptyList /> }
         < View className="h-[230px]" />
-      </ScrollView>
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 };
 
-export default OrdersSection;
+export default CartSection;

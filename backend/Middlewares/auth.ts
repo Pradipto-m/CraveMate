@@ -8,7 +8,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     if (!token)
       return res.status(401).json({ err: 'Unauthorized' });
 
-    const verified: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const verified: any = jwt.verify(token, process.env.JWT_KEY!);
     if (!verified) {
       return res.status(401).json({ err: 'Unauthorized' });
     }

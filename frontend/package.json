@@ -16,6 +16,7 @@
     "@react-navigation/material-bottom-tabs": "^6.2.19",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+    "@stripe/stripe-react-native": "^0.37.0",
     "axios": "^1.6.5",
     "jotai": "^2.6.2",
     "nativewind": "^2.0.11",

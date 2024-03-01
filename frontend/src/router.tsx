@@ -5,6 +5,7 @@ import LoginScreen from './components/auth/login';
 import SignupScreen from './components/auth/signup';
 import MenuCard from './components/screens/card';
 import TabRoutes from './bottomTabs';
+import OrderScreen from './components/screens/order';
 
 const Router = () => {
 
@@ -22,6 +23,7 @@ const Router = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="Tabs" component={TabRoutes} />
+      <Stack.Screen name="Order" component={OrderScreen} />
       <Stack.Screen name="Menucard"
         component={MenuCard}
         options={{

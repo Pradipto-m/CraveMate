@@ -1,6 +1,27 @@
 import {Request, Response} from "express";
+import Stripe from 'stripe';
 import OrderItem from "../Models/orderModel";
 import UserCart from '../Models/cartModel';
+
+const stripe = new Stripe(process.env.STRIPE_KEY!);
+
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    if (!userId) {
+      return res.status(400).json({error: "userId is required!"});
+    }
+
+    const orders = await OrderItem.find({ userId: userId });
+    if (!orders) {
+      return res.status(404).json({error: "No orders found"});
+    }
+    res.status(200).json(orders);
+
+  } catch (err) {
+    res.status(500).json({error: err});
+  }
+};
 
 const placeOrder = async (req: Request, res: Response) => {
   try {
@@ -43,22 +64,22 @@ const placeOrder = async (req: Request, res: Response) => {
   }
 };
 
-const getOrders = async (req: Request, res: Response) => {
+const paymentController = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id;
-    if (!userId) {
-      return res.status(400).json({error: "userId is required!"});
-    }
-
-    const orders = await OrderItem.find({ userId: userId });
-    if (!orders) {
-      return res.status(404).json({error: "No orders found"});
-    }
-    res.status(200).json(orders);
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: req.body.amount,
+      currency: 'inr',
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    }, {
+      apiKey: process.env.STRIPE_KEY,
+    });
+    res.json({ paymentIntent: paymentIntent.client_secret });
 
   } catch (err) {
-    res.status(500).json({error: err});
+    res.status(400).json({ error: err });
   }
 };
 
-export default { placeOrder, getOrders };
+export default { getOrders, placeOrder, paymentController };
