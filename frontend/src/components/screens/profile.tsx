@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect } from 'react';
 import { View, Text, SafeAreaView, useColorScheme, Image, Pressable, Alert, ScrollView } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 import { color } from '../../themes';
 import { useAtom, useSetAtom } from 'jotai';
 import { logoutAtom, userAtom } from '../../contexts/userStore';
@@ -21,7 +20,7 @@ const ProfileSection = ({navigation} : any) => {
       await fetchOrders(user._id);
     };
     getOrders();
-  }, [fetchOrders, user]);
+  });
 
   const logout = () => {
     logoutUser();
@@ -64,9 +63,9 @@ const ProfileSection = ({navigation} : any) => {
       <View className="h-[1.5px] mx-4 mt-6 bg-slate-700" />
       {/* Scrollable orders list */}
       <ScrollView showsVerticalScrollIndicator={true} style={{flex: 1}}>
-        <Animated.View entering={FadeInDown.duration(650)}>
-        {orders.length === 0 ? < EmptyList /> :
-        orders.map((order, index) => (
+        <View>
+        {orders?.length === 0 ? < EmptyList /> :
+        orders?.map((order, index) => (
           <View key={index} className="flex-col mx-6 mt-8">
           <View className="flex-col items-start rounded-t-2xl p-2" style={{backgroundColor: Dark ? color.contrastDark : color.contrastLight}}>
             {order.products.map((product, id) => (
@@ -81,7 +80,7 @@ const ProfileSection = ({navigation} : any) => {
           </View>
         </View>
         ))}
-        </Animated.View>
+        </View>
         <View className="h-24"/>
       </ScrollView>
     </SafeAreaView>

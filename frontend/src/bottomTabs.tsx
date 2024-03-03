@@ -1,11 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { useAtom } from 'jotai';
-import { cartAtom } from './contexts/cartStore';
 import { color } from './themes';
+import { useAtom, useSetAtom } from 'jotai';
+import { userAtom } from './contexts/userStore';
+import { cartAtom, fetchUserCart } from './contexts/cartStore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import HomePage from './components/screens/home';
@@ -16,7 +17,18 @@ import CartSection from './components/screens/cart';
 const TabRoutes = () => {
     const Tab = createMaterialBottomTabNavigator();
     const Dark = useColorScheme() === 'dark';
+    const [user] = useAtom(userAtom);
     const [cart] = useAtom(cartAtom);
+    const fetchCart = useSetAtom(fetchUserCart);
+
+  useEffect(() => {
+    // cart data
+    const getUserCart = async () => {
+      await fetchCart(user._id)
+      .catch((err) => console.log(err));
+    };
+    getUserCart();
+  }, [fetchCart, user._id]);
 
     return (
       <Tab.Navigator

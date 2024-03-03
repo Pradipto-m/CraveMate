@@ -1,8 +1,10 @@
-import {View, Text, Image, ActivityIndicator, Alert, useColorScheme, ToastAndroid} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {View, Text, Image, Alert, useColorScheme, ToastAndroid} from 'react-native';
 import React, { useEffect } from 'react';
 import { useSetAtom } from 'jotai';
 import {color} from '../../themes';
 import { fetchUser } from '../../contexts/userStore';
+import LottieView from 'lottie-react-native';
 
 const SplashOnboard = ({navigation}: any) => {
   // const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
@@ -21,7 +23,7 @@ const SplashOnboard = ({navigation}: any) => {
         navigation.replace('Login');
       }
     };
-    setTimeout(fetchUserData, 1250);
+    setTimeout(fetchUserData, 1300);
   });
 
   return (
@@ -37,10 +39,11 @@ const SplashOnboard = ({navigation}: any) => {
         style={{color: Dark ? color.contrastLight : color.primaryDark}}>
         CraveMate
       </Text>
-      <ActivityIndicator
-        className="mt-12"
-        size="large"
-        color={color.secondaryLight}
+      <LottieView
+      source={require('../../../assets/loader.json')}
+      style={{width: 250, height: 250, marginBottom: -20}}
+      autoPlay
+      loop
       />
     </View>
   );

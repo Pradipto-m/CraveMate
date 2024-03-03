@@ -2,7 +2,6 @@ import { atom } from 'jotai';
 import { orderModel } from '../models/orderModel';
 import orderService from '../services/orderService';
 import productService from '../services/productService';
-import { emptyCart } from './cartStore';
 
 export const orderAtom = atom<orderModel[]>([]);
 
@@ -39,21 +38,17 @@ export const placeOrderAtom = atom(
     try {
       const res = await orderService.placeOrder(userId, address, phone);
       if (res.status < 300) {
-        const orders = res.data;
+        const order = res.data;
 
         // Fetching the product names for each order
-        const updateOrder = await Promise.all(orders.map(async (order: any) => {
-          const updatedName = await Promise.all(
-            order.products.map(async (product: any) => {
-            const response = await productService.fetchById(product.productId);
-            return { ...product, itemName: response.data.name };
-          }));
-          return { ...order, products: updatedName };
+        const updatedName = await Promise.all(
+          order.products.map(async (product: any) => {
+          const response = await productService.fetchById(product.productId);
+          return { ...product, itemName: response.data.name };
         }));
 
-        set(orderAtom, updateOrder);
-        // Empty the cart
-        set(emptyCart);
+        set(orderAtom, (prev) => [...prev, {...order, products: updatedName}]);
+        // set(orderAtom, [...get(orderAtom), ...updatedName]);
       }
     } catch (err) {
       console.error(err);

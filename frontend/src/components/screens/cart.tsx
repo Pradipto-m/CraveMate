@@ -68,7 +68,7 @@ const CartSection = ({navigation}: any) => {
       </View>
       <View className="h-[1.5px] mx-4 bg-slate-700" />
       <Animated.ScrollView showsVerticalScrollIndicator={false} entering={FadeInDown.duration(700)}>
-        {cartItem.length !== 0 ? cartItem.map((item, index) => (
+        {cartItem?.length !== 0 ? cartItem?.map((item, index) => (
           <View key={index} className="flex-row mx-7 mt-7">
             <ImageBackground
             source={{uri: item.img}}
