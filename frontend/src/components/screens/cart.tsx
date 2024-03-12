@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import { View, Text, SafeAreaView, useColorScheme, ImageBackground, Pressable, ToastAndroid } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, useColorScheme, ImageBackground, Pressable, ToastAndroid, ActivityIndicator } from 'react-native';
 import { color } from '../../themes';
 import { useAtom, useSetAtom } from 'jotai';
 import { userAtom } from '../../contexts/userStore';
@@ -14,6 +14,7 @@ import EmptyList from '../emptyList';
 const CartSection = ({navigation}: any) => {
 
   const Dark = useColorScheme() === 'dark';
+  const [load, setLoad] = useState(false);
   const [cartItem] = useAtom(itemsAtom);
   const [cart] = useAtom(cartAtom);
   const [user] = useAtom(userAtom);
@@ -21,16 +22,20 @@ const CartSection = ({navigation}: any) => {
   const removeItem = useSetAtom(removeFromCart);
 
   const addClicked = async (itemId: string) => {
+    setLoad(true);
     await addMore(user._id, itemId).catch((err) => {
       ToastAndroid.show('Something went wrong!', ToastAndroid.SHORT);
       console.error(err);
     });
+    setLoad(false);
   };
   const removeClicked = async (itemId: string) => {
+    setLoad(true);
     await removeItem(user._id, itemId).catch((err) => {
       ToastAndroid.show('Something went wrong!', ToastAndroid.SHORT);
       console.error(err);
     });
+    setLoad(false);
   };
 
   return (
@@ -100,7 +105,11 @@ const CartSection = ({navigation}: any) => {
               <Pressable onPress={() => addClicked(item._id)}>
                 <Feather name="plus-circle" size={26} color={Dark ? color.contrastLight : color.primaryDark} />
               </Pressable>
-              <Text className="text-xl font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}}>{cart?.products[index]?.quantity}</Text>
+              <Text className="text-xl font-bold" style={{color: Dark ? color.contrastLight : color.primaryDark}}>
+                {load ?
+                <ActivityIndicator size={'small'} color={'red'} />
+                : cart?.products[index]?.quantity}
+              </Text>
               <Pressable onPress={() => removeClicked(item._id)}>
                 <Feather name="minus-circle" size={26} color={Dark ? color.contrastLight : color.primaryDark} />
               </Pressable>

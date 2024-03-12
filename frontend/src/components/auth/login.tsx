@@ -58,7 +58,7 @@ const LoginScreen = ({navigation}: any) => {
       setEmail('');
       setPassword('');
       setLoad(false);
-    }, 1250);
+    }, 1000);
   };
 
   return (

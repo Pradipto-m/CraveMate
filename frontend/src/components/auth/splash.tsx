@@ -23,7 +23,7 @@ const SplashOnboard = ({navigation}: any) => {
         navigation.replace('Login');
       }
     };
-    setTimeout(fetchUserData, 1300);
+    setTimeout(fetchUserData, 1100);
   });
 
   return (

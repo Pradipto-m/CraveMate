@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, SafeAreaView, ScrollView, TextInput, Pressable, useColorScheme, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, SafeAreaView, ScrollView, TextInput, Pressable, useColorScheme, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useAtom, useSetAtom } from 'jotai';
 import { color } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
@@ -11,9 +11,11 @@ import EmptyList from '../emptyList';
 const MenuScreen = ({navigation}: any) => {
 
   const Dark = useColorScheme() === 'dark';
-  const category = ['All', 'Spicy', 'Chinese', 'Italian', 'Continental', 'Desserts'];
+  const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
+  const category = ['All', 'Spicy', 'Chinese', 'Continental', 'Crispy', 'Snacks'];
 
   const [refresh, setRefresh] = useState(false);
+  const [load, setLoad] = useState(true);
   const [products] = useAtom(productAtom);
   const fetchAll = useSetAtom(fetchProducts);
   const fetchCategory = useSetAtom(fetchByCategory);
@@ -22,14 +24,21 @@ const MenuScreen = ({navigation}: any) => {
 
   useEffect(() => {
     fetchAll();
+    delay(1000).then(() => setLoad(false));
   }, [fetchAll, fetchCategory, fetchSearched]);
 
-  const categoryPressed = (genre: string) => {
-    if (genre === 'all') { fetchAll(); }
-    else { fetchCategory(genre); }
+  const categoryPressed = async (genre: string) => {
+    setLoad(true);
+    if (genre === 'all') {
+      await fetchAll();
+      setLoad(false);
+    }
+    else { await fetchCategory(genre); setLoad(false); }
   };
-  const searchPressed = () => {
-    fetchSearched(name);
+  const searchPressed = async () => {
+    setLoad(true);
+    await fetchSearched(name);
+    setLoad(false);
   };
 
   return (
@@ -65,6 +74,8 @@ const MenuScreen = ({navigation}: any) => {
         </View>
       </ScrollView>
       {/* scrollable menu items */}
+      {load ?
+      <ActivityIndicator size={'large'} color={'red'} className="h-1/2 items-center justify-start" /> :
       <FlatList
         className="mb-36"
         showsVerticalScrollIndicator={false}
@@ -102,7 +113,7 @@ const MenuScreen = ({navigation}: any) => {
           </Animated.View>
         )}
         ListEmptyComponent={EmptyList}
-      />
+      />}
     </SafeAreaView>
   );
 };

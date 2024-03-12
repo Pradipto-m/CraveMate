@@ -1,25 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 import { View, Text, SafeAreaView, useColorScheme, ScrollView, KeyboardAvoidingView, TextInput, Keyboard } from 'react-native';
 import React, { Fragment, useState } from 'react';
-import { useAtom, useSetAtom } from 'jotai';
 import { useStripe } from '@stripe/stripe-react-native';
-import { color } from '../../themes';
-import SwipeButton from 'rn-swipe-button';
-import LinearGradient from 'react-native-linear-gradient';
+import { useAtom, useSetAtom } from 'jotai';
 import { userAtom } from '../../contexts/userStore';
 import { cartAtom, emptyCart, itemsAtom } from '../../contexts/cartStore';
 import { placeOrderAtom } from '../../contexts/ordersStore';
+import { color } from '../../themes';
+import SwipeButton from 'rn-swipe-button';
+import LinearGradient from 'react-native-linear-gradient';
 import orderService from '../../services/orderService';
-import StatusModal from '../statusModal';
+import { ProcessModal, SuccessModal } from '../statusModal';
 
 const OrderScreen = ({navigation}: any) => {
 
+  const delay = (ms : number) => new Promise(res => setTimeout(res, ms));
   const Dark = useColorScheme() === 'dark';
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [keyboard, setKeyboard] = useState(false);
   const [payment, setPayment] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [load, setLoad] = useState(false);
 
   Keyboard.addListener('keyboardDidShow', () => {
     setKeyboard(true);
@@ -76,11 +78,14 @@ const OrderScreen = ({navigation}: any) => {
         setPayment(true);
         console.error('Payment failed', result.error);
       } else {
+        setLoad(true);
+        setPayment(true);
+        delay(500);
         await order(user._id, address, phone)
         .then( async () => {
           await updateCart().then(() => {
             setSuccess(true);
-            setPayment(true);
+            setLoad(false);
             console.log('Payment and Order successful');
           }).catch((err) => console.error(err));
         })
@@ -92,7 +97,7 @@ const OrderScreen = ({navigation}: any) => {
       }
       setTimeout( async () => {
         navigation.pop();
-      }, 2300);
+      }, 2400);
     })
     .catch((err) => {
       console.error('Error presenting payment sheet', err);
@@ -101,7 +106,8 @@ const OrderScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight, minHeight: '100%'}}>
-      {payment ? <StatusModal status={success} /> :
+      {/* show the payment status or the order UI */}
+      {payment ? load ? <ProcessModal /> : <SuccessModal status={success} /> :
       <>
       {/* header menu */}
       <View className="flex-row items-center justify-between mx-4 h-16" >

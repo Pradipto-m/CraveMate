@@ -4,10 +4,10 @@ import orderController from '../Controllers/orderController';
 
 const orderRouter = express.Router();
 
-orderRouter.post('/api/cart/order', auth, orderController.placeOrder);
+orderRouter.post('/api/v1/cart/order', auth, orderController.placeOrder);
 
-orderRouter.get('/api/orders/user/:id', auth, orderController.getOrders);
+orderRouter.get('/api/v1/orders/user/:id', auth, orderController.getOrders);
 
-orderRouter.post('/api/order/pay', orderController.paymentController);
+orderRouter.post('/api/v1/order/pay', orderController.paymentController);
 
 export default orderRouter;

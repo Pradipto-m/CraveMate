@@ -21,7 +21,7 @@ const HomePage = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Banner Carousel */}
-        <Animated.View entering={FadeInDown.duration(750)}>
+        <Animated.View entering={FadeInDown.duration(800)}>
           <Carousel
             loop={true}
             width={width}
@@ -42,7 +42,7 @@ const HomePage = () => {
         <View className="flex m-3">
           <Text className="font-bold text-base" style={{color: Dark ? color.contrastLight : color.primaryDark}} >Trending Offers</Text>
         </View>
-        <Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} entering={FadeInDown.duration(750)} >
+        <Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} entering={FadeInDown.duration(800)} >
           <View className = "flex-row justify-center items-center" >
             {trending.map((item, index) => (
               <View key={index} className = "flex-col justify-center items-center m-3 p-2 bg-red-500 rounded-xl w-32 h-44" >
@@ -53,7 +53,7 @@ const HomePage = () => {
           </View>
         </Animated.ScrollView>
 
-        <Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} entering={FadeInDown.duration(750)} >
+        <Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} entering={FadeInDown.duration(800)} >
           <View className = "flex-row justify-center items-center" >
             {popular.map((item, index) => (
               <View key={index} className = "flex-col justify-center items-center m-3 bg-red-500 rounded-2xl h-44" style={{width : width * 0.68}} >

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const apiUrl = 'http://192.168.0.103:3000/api/user';
+const apiUrl = 'https://cravemate-pro.vercel.app/api/v1/user';
 
 const authService = {
   // Signup api call

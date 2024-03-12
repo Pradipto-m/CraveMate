@@ -13,34 +13,42 @@ export const banner = [
 export const trending = [
     {
       img: 'https://img.bestrecipes.com.au/iyddCRce/br/2019/02/1980-crunchy-chicken-twisties-drumsticks-951509-1.jpg',
-      desc: '$199',
+      desc: '₹199*',
     },
     {
       img: 'https://img.freepik.com/free-photo/fresh-pasta-with-hearty-bolognese-parmesan-cheese-generated-by-ai_188544-9469.jpg',
-      desc: '$199',
+      desc: '₹199*',
     },
     {
-      img: 'https://img.bestrecipes.com.au/iyddCRce/br/2019/02/1980-crunchy-chicken-twisties-drumsticks-951509-1.jpg',
-      desc: '$199',
+      img: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg',
+      desc: '₹149*',
     },
     {
-      img: 'https://img.freepik.com/free-photo/fresh-pasta-with-hearty-bolognese-parmesan-cheese-generated-by-ai_188544-9469.jpg',
-      desc: '$199',
+      img: 'https://img.freepik.com/free-photo/side-view-chicken-kebab-lavash-served-with-fresh-herbs-onion-adjika-sauce_141793-2957.jpg',
+      desc: '₹149*',
+    },
+    {
+      img: 'https://img.freepik.com/free-photo/side-view-shawarma-with-fried-potatoes-board-cookware_176474-3215.jpg',
+      desc: '₹99*',
     },
 ];
 
 export const popular = [
     {
-      img: 'https://www.thomascook.in/blog/wp-content/uploads/2023/09/Must-Try-In-Tamil-Nadu.png',
-      desc: 'Bonus Snacks',
-    },
-    {
-      img: 'https://img.bestrecipes.com.au/iyddCRce/br/2019/02/1980-crunchy-chicken-twisties-drumsticks-951509-1.jpg',
+      img: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg',
       desc: 'Festive Specials',
     },
     {
-      img: 'https://www.thomascook.in/blog/wp-content/uploads/2023/09/Must-Try-In-Tamil-Nadu.png',
-      desc: 'Bonus Family Pack',
+      img: 'https://images.unsplash.com/photo-1544025162-d76694265947',
+      desc: 'Special Family Pack',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543',
+      desc: 'Bonus Snacks',
+    },
+    {
+      img: 'https://img.freepik.com/free-photo/flame-grilled-meat-cooking-flames-generative-ai_188544-12355.jpg',
+      desc: 'Bonus Snacks',
     },
 ];
 

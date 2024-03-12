@@ -4,14 +4,14 @@ import auth from '../Middlewares/auth';
 
 const productRouter = express.Router();
 
-productRouter.post('/api/product/create', auth, productController.addProduct);
+productRouter.post('/api/v1/product/create', productController.addProduct);
 
-productRouter.get('/api/product/all', auth, productController.getProducts);
+productRouter.get('/api/v1/product/all', auth, productController.getProducts);
 
-productRouter.get('/api/product/category', auth, productController.categoryProducts);
+productRouter.get('/api/v1/product/category', auth, productController.categoryProducts);
 
-productRouter.get('/api/product/search/:name', auth, productController.searchProducts);
+productRouter.get('/api/v1/product/search/:name', auth, productController.searchProducts);
 
-productRouter.get('/api/product/:id', auth, productController.fetchById);
+productRouter.get('/api/v1/product/:id', auth, productController.fetchById);
 
 export default productRouter;

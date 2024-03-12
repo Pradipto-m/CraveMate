@@ -4,7 +4,34 @@ import React, { useEffect, useRef } from 'react';
 import LottieView from 'lottie-react-native';
 import { color } from '../themes';
 
-const StatusModal = ({status}: {status: boolean}) => {
+export const ProcessModal = () => {
+  const Dark = useColorScheme() === 'dark';
+  return (
+    <View>
+      <ImageBackground
+      source={Dark ? require('../../assets/darkBg.jpg')
+      : require('../../assets/lightBg.jpg')}
+      style={{height: '100%', width: '100%'}}
+      resizeMode="cover"
+      blurRadius={8}
+      >
+        <View className="h-full items-center justify-center">
+          <View className="items-center justify-center rounded-[45px]" style={{backgroundColor: Dark ? color.bottomTabsDark : color.bottomTabsLight}}>
+            <LottieView
+            source={require('../../assets/loader.json')}
+            style={{height: 280, width: 280}}
+            autoPlay
+            loop
+            />
+            <Text className="font-semibold text-xl px-4 pb-4" style={{color: Dark ? color.contrastLight : color.primaryDark}}>Processing Payment Please Wait...</Text>
+          </View>
+        </View>
+      </ImageBackground>
+    </View>
+  );
+};
+
+export const SuccessModal = ({status}: {status: boolean}) => {
   const Dark = useColorScheme() === 'dark';
   const animation = useRef<LottieView>(null);
   useEffect(() => {
@@ -46,5 +73,3 @@ const StatusModal = ({status}: {status: boolean}) => {
     </View>
   );
 };
-
-export default StatusModal;

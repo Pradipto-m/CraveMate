@@ -4,10 +4,10 @@ import auth from '../Middlewares/auth';
 
 const authRouter = express.Router();
 
-authRouter.post('/api/user/signup', authController.signupUser);
+authRouter.post('/api/v1/user/signup', authController.signupUser);
 
-authRouter.post('/api/user/login', authController.loginUser);
+authRouter.post('/api/v1/user/login', authController.loginUser);
 
-authRouter.get('/api/user/auth', auth, authController.getUser);
+authRouter.get('/api/v1/user/auth', auth, authController.getUser);
 
 export default authRouter;

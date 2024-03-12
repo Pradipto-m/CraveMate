@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import { View, Text, SafeAreaView, useColorScheme, Pressable, ToastAndroid, useWindowDimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, useColorScheme, Pressable, ToastAndroid, useWindowDimensions, ActivityIndicator } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 import { useAtom, useSetAtom } from 'jotai';
 import { userAtom } from '../../contexts/userStore';
@@ -21,6 +21,7 @@ const MenuCard = ({route}: any) => {
   const item = product.find((i) => i._id === id);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+  const [load, setLoad] = useState(false);
 
   const Animation = useAnimatedStyle(() => {
     return {
@@ -44,20 +45,23 @@ const MenuCard = ({route}: any) => {
 
   const cartBtn = async () => {
     // Add to cart
+    setLoad(true);
     await addCart(user._id, item?._id!);
     ToastAndroid.show('Added to cart', ToastAndroid.SHORT);
+    setLoad(false);
   };
 
   return (
     <SafeAreaView style={{backgroundColor: Dark ? color.primaryDark : color.primaryLight, minHeight: '100%'}}>
       {/* Floating action buttons */}
       <Pressable
-        className="flex-row items-center justify-between px-3 w-32 h-16 rounded-3xl absolute z-50 bottom-8 right-8"
+        className="flex-row items-center justify-center px-3 w-32 h-16 rounded-3xl absolute z-50 bottom-8 right-8"
         style={{backgroundColor: Dark ? color.secondaryDark : color.secondaryLight}}
         onPress={cartBtn}
       >
-        <Feather name="shopping-cart" size={25} color="white" />
-        <Text className="font-bold text-white">Add to cart</Text>
+        {load ? <ActivityIndicator size="large" color="white" /> :
+        <><Feather name="shopping-cart" size={25} color="white" />
+        <Text className="pl-2 font-bold text-white">Add to cart</Text></>}
       </Pressable>
       <View
       className="justify-center items-center w-16 h-16 rounded-full absolute z-50 top-5 right-5"

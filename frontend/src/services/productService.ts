@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const apiUrl = 'http://192.168.0.103:3000/api/product';
+const apiUrl = 'https://cravemate-pro.vercel.app/api/v1/product';
 
 const productService = {
   getAll: async () => {

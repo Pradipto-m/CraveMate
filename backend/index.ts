@@ -13,7 +13,7 @@ import orderRouter from './Routes/orderRoute';
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
-const db = process.env.DB;
+const db = process.env.DB_URL;
 
 // Connection
 app.listen(port, () => {
